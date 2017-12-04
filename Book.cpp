@@ -25,10 +25,15 @@ void Book::printShortDescription(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
   << "[" << genre <<"]" <<". ";
   if(!borrowed){
-  	cout << "AVAILIBLE."<< endl;
+  	cout << "AVAILABLE."<< endl;
   }else{
   	cout <<"CHECKED OUT " <<"(AccountID# " << borrowerId << ")."<< endl;
   }
+}
+
+void Book::printShortDescription2(){
+  cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
+  << "[" << genre <<"]" <<". " << endl;
 }
 
 void Book::printFullDescription(){
@@ -38,7 +43,7 @@ void Book::printFullDescription(){
   << "Genre: " << genre << "\n"
   << "Popularity Score: " << popularity <<"\n";
   if(!borrowed){
-  	cout << "AVAILIBLE."<< endl;
+  	cout << "AVAILABLE."<< endl;
   }else{
   	cout << "Borrower AccountID#: " << borrowerId << "\n"
   	<< "Due Date: " << dueDate <<"\n"
@@ -56,13 +61,14 @@ void Book::resetAfterReturn(){
   borrowed = false;
   overdue = false;
 }
-//set the current borrweers ID and if it is unique increment popularity
+//
 void Book::setBorrowerId(int accountId){
   borrowerId = accountId;
+  borrowed = true;
   auto it = usersReadThis.find(accountId);
   if(it == usersReadThis.end()){
-  	usersReadThis.insert(accountId);
-  	popularity++;
+   usersReadThis.insert(accountId);
+   popularity++;
   }
 }
 

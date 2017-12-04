@@ -32,6 +32,7 @@ public:
   void printFullDescription();
   //print short description of the book
   void printShortDescription();//--------
+  void printShortDescription2();  
   void resetAfterReturn();
   //returns true if the accoundId had previously read this book
   bool userReadThis(int accId);

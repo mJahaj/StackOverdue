@@ -16,19 +16,22 @@ istream& operator>>(istream& bookFile, LibraryBooks& bookS){
 }
 
 void LibraryBooks::printAllById(){
-  for(auto it = books.begin(); it != books.end(); ++it){
+  int i = 1;
+  for(auto it = books.begin(); it != books.end(); ++it, i++){
+    cout << i << ". ";  
   	it->second->printShortDescription();
   }
 }
 
 void LibraryBooks::printAllByTitle(){
   multimap<string, Book*> sortTitle;
-
+  
   for(auto it = books.begin(); it != books.end(); ++it){
   	sortTitle.insert(pair<string, Book*>(it->second->getTitle(), it->second));
   }
-
-  for(auto it = sortTitle.begin(); it != sortTitle.end(); ++it){
+  int i = 1;
+  for(auto it = sortTitle.begin(); it != sortTitle.end(); ++it, i++){
+    cout << i << ". ";
   	it->second->printShortDescription();
   }
 }
@@ -39,8 +42,9 @@ void LibraryBooks::printAllByAuthor(){
   for(auto it = books.begin(); it != books.end(); ++it){
   	sortAuthor.insert(pair<string, Book*>(it->second->getAuthor(), it->second));
   }
-
-  for(auto it = sortAuthor.begin(); it != sortAuthor.end(); ++it){
+  int i = 1;
+  for(auto it = sortAuthor.begin(); it != sortAuthor.end(); ++it, i++){
+    cout << i << ". ";
   	it->second->printShortDescription();
   }
 }
@@ -51,8 +55,9 @@ void LibraryBooks::printAllByGenre(){
   for(auto it = books.begin(); it != books.end(); ++it){
   	sortGenre.insert(pair<string, Book*>(it->second->getGenre(), it->second));
   }
-
-  for(auto it = sortGenre.begin(); it != sortGenre.end(); ++it){
+  int i = 1;
+  for(auto it = sortGenre.begin(); it != sortGenre.end(); ++it, i++){
+    cout << i << ". ";
   	it->second->printShortDescription();
   }
 }
@@ -63,8 +68,9 @@ void LibraryBooks::printAllByPopularity(){
   for(auto it = books.begin(); it != books.end(); ++it){
   	sortPopularity.insert(pair<int, Book*>(it->second->getPopularity(), it->second));
   }
-
- for(auto it = sortPopularity.rbegin(); it != sortPopularity.rend(); ++it){
+  int i = 1;
+ for(auto it = sortPopularity.rbegin(); it != sortPopularity.rend(); ++it, i++){
+   cout << i << ". ";  
    it->second->printShortDescription();
  }
 }
@@ -125,6 +131,15 @@ void LibraryBooks::addBook(){
     cout << "BookID# " << newBookId <<" successfully created." << endl;
   }
 
+}
+
+bool LibraryBooks::giveBookUnconditional(int bookID, Book*& tempBook){
+  auto it = books.find(bookID);
+  if(it == books.end()){
+    return false;
+  }
+  tempBook = it->second;
+  return true;
 }
 //-------------------Helper Functions----------------------------
 bool LibraryBooks::foundPhrase(string phrase, string str){

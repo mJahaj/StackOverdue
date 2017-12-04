@@ -28,6 +28,8 @@ public:
   void searchByAuthorPhrase(string phrase);
   //add a book to the current library
   void addBook();
+  //give a book for setup
+  bool giveBookUnconditional(int bookID, Book*& tempBook);
   friend istream& operator>>(istream& bookFile, LibraryBooks& bookS);
   
 private:

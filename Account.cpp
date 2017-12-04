@@ -10,7 +10,7 @@ void Account::printAccountShort(){
   	int i = 1;
   	for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, ++i){
   	cout << "\t" << i << ". "; 
-  	it->second->printShortDescription();
+  	it->second->printShortDescription2();
     }
   }
 }

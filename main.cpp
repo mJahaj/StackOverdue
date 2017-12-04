@@ -1,14 +1,17 @@
 
-#include "Book.h"
+//#include "Book.h"
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <iterator>
-#include "LibraryBooks.h"
-#include "Account.h"
+//#include "LibraryBooks.h"
+//#include "Account.h"
+#include "StackOverdue.h"
 using namespace std;
 
 int main(int argc, char **argv){
+
+  
 
   string bookFile = "";
   string accountFile = "";
@@ -19,6 +22,11 @@ int main(int argc, char **argv){
     accountFile = argv[2];
   }
 
+  StackOverdue newStackOverdue(bookFile, accountFile);
+
+  
+  
+  /*
   ifstream inpAcc;
   inpAcc.open(bookFile);
   if(inpAcc.fail()){
@@ -35,11 +43,8 @@ int main(int argc, char **argv){
   acc.printAccountShort();
   Book tb("Cool Book", "TripleDoor", "Mystery", 1);
   acc.takeBook(&tb);
-
-
-  LibraryBooks library;
-  library.addBook();
-  library.addBook();
+*/
+  
   //acc.printAccountShort();
   //Book testB;
   //inpBooks >> testB;
