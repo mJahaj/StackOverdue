@@ -22,6 +22,10 @@ public:
   void printAllByGenre(); 
   //print short description of all books by popularity ascending numerical
   void printAllByPopularity();
+  //finds a specific book and prints full desctiption
+  void printSpecificBook();
+  //
+  void searchByPhrase();
   //print short description of books contining a given phrase in the title
   void searchByTitlePhrase(string phrase);
   //print short description of books contining a given phrase in the title
@@ -30,7 +34,15 @@ public:
   void addBook();
   //give a book for setup
   bool giveBookUnconditional(int bookID, Book*& tempBook);
+  //
+  void setBooksCurrDate(int date);
+  int librarySize(){return books.size();}
+
+  
+
+  void browse();
   friend istream& operator>>(istream& bookFile, LibraryBooks& bookS);
+
   
 private:
   int bookCount;
@@ -38,6 +50,7 @@ private:
 
   bool foundPhrase(string phrase, string str);
   bool bookAlreadyExists(string, string);
+  bool isValidInt(string str);
   int generateId();
 };
 

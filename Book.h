@@ -26,6 +26,10 @@ public:
   void setBorrowerId(int accountId);
   //sets the due date of the book
   void setDueDate(int date){dueDate = date;}
+  //set the current system date
+  void setCurrDate(int date);
+  //find out if the book is overdue
+  void findIfOverdue();
   //set the amount of times this book has been renewed
   void setTimesRenewed(int count){timesRenewed = count;}
   //print full description of the book
@@ -42,12 +46,15 @@ private:
   string author;
   string title;
   string genre;
+  int popularity;
+  int currDate;
   int dueDate;
   int timesRenewed;
+
   int borrowerId;
   bool borrowed;
   bool overdue;
-  int popularity;
+  
 
   set<int> usersReadThis;
 };

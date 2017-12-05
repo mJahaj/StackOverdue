@@ -17,6 +17,8 @@ public:
   void printAccountShort();
   //returns the accounts id
   int getAccountId(){return id;}
+  // return users name
+  string getName(){return name;}
   //returns the number of books in the account
   int getNumOfBooks(){return accountBooks.size();}
   //take book and add it 

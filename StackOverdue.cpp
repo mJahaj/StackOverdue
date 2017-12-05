@@ -4,6 +4,8 @@
 StackOverdue::StackOverdue(string libraryFile, string accountsFile){
   time = 1;
   setStackOverdue(libraryFile, accountsFile);
+  library.setBooksCurrDate(time);
+  commandLoop();
 
 }
 
@@ -55,6 +57,44 @@ void StackOverdue::printHelp(){
   cout << "EXPORT: Exports the library’s books and accounts to files." << endl;
   cout << "HELP: Displays this help menu." << endl;
   cout << "EXIT: Exits the program." << endl;
+}
+
+void StackOverdue::commandLoop(){
+  string userInput = "";
+
+  while(userInput != "EXIT"){
+  	cout << "> ";
+  	getline(cin, userInput);
+    
+    if(userInput == "BROWSE"){
+      library.browse();
+      cout << endl;
+    }else if(userInput == "HELP"){
+      printHelp();
+      cout << endl;
+    }else if(userInput == "BOOK"){
+      if(library.librarySize() <= 0){
+      	cout << "No books in your library.\n" << endl;
+      }else{
+      	library.printSpecificBook();
+        cout << endl;
+      }
+    }else if(userInput == "SEARCH"){
+      if(library.librarySize() <= 0){
+      	cout << "No books in your library.\n" << endl;
+      }else{
+        library.searchByPhrase();
+        cout << endl;
+      }
+    }
+
+    //else{
+      //cout << "Invalid command.\n" << endl;
+    //}
+
+  }
+
+  cout << "Thank you for using StackOverdue!" << endl;
 }
 
 //------------------Helper Functions-----------------------

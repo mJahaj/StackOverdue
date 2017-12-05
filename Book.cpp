@@ -21,6 +21,19 @@ Book::Book(string titlE, string authoR, string genrE, int iD){
   popularity = 0;
 }
 
+void Book::setCurrDate(int date){
+  currDate = date;
+  findIfOverdue();
+}
+
+void Book::findIfOverdue(){
+  if(dueDate < currDate){
+    overdue = true;
+  }else{
+    overdue = false;
+  }
+}
+
 void Book::printShortDescription(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
   << "[" << genre <<"]" <<". ";
@@ -43,11 +56,11 @@ void Book::printFullDescription(){
   << "Genre: " << genre << "\n"
   << "Popularity Score: " << popularity <<"\n";
   if(!borrowed){
-  	cout << "AVAILABLE."<< endl;
+  	cout << "AVAILABLE"<< endl;
   }else{
   	cout << "Borrower AccountID#: " << borrowerId << "\n"
   	<< "Due Date: " << dueDate <<"\n"
-  	<< "Times Renewed: " << timesRenewed << "\n";
+  	<< "Times renewed: " << timesRenewed << "\n";
   	if(overdue){//-------------------------------------------------maybe func instead
   	  cout << "OVERDUE" << endl; 
   	}

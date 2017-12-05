@@ -17,6 +17,7 @@ public:
   StackOverdue(string libraryFile, string accountsFile);
   //this function loads the books and accounts from the files
   void setStackOverdue(string libraryFile, string accountFile);
+  void commandLoop();
   void printHelp();
 private:
   LibraryBooks library;
@@ -25,6 +26,7 @@ private:
 
   void readAccountsInputStream(ifstream& accountsInputFileHandle);
   map<int, Account*> theAccounts;
+  //maybe set to keep track of all id's used for generating new id
 };
 
 #endif
