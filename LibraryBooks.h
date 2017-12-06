@@ -11,6 +11,7 @@ using namespace std;
 
 class LibraryBooks{
 public:
+  LibraryBooks();
   //~LibraryBooks();
   //print short description of all books by ID ascending numerical
   void printAllById();
@@ -46,6 +47,7 @@ public:
   
 private:
   int bookCount;
+  int largestBookId;
   map<int, Book*> books; 
 
   bool foundPhrase(string phrase, string str);

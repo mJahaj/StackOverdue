@@ -1,15 +1,23 @@
 
 #include "LibraryBooks.h"
 
+LibraryBooks::LibraryBooks(){
+  largestBookId = 0;
+}
 
 istream& operator>>(istream& bookFile, LibraryBooks& bookS){
   bookFile >> bookS.bookCount;
-  string consumeEmpty;//---------------------------------------
+  string consumeEmpty;
   getline(bookFile, consumeEmpty);
 
   for(int i = 0; i < bookS.bookCount; i++){
     Book* newBook = new Book;
     bookFile >> *newBook;
+    //keep track of largest id
+    if(newBook->getId() > bookS.largestBookId){
+      bookS.largestBookId = newBook->getId();
+    }
+
     bookS.books.emplace(newBook->getId(), newBook);
   }
   return bookFile;
@@ -135,10 +143,10 @@ void LibraryBooks::addBook(){
   if(bookAlreadyExists(title, author)){
     cout <<"Book with this title and author already exists." << endl;
   }else{
-    int newBookId = generateId();
-    Book* newBook = new Book(title, author, genre, newBookId);
-    books.insert(std::pair<int, Book*> (newBookId, newBook));
-    cout << "BookID# " << newBookId <<" successfully created." << endl;
+    largestBookId++; 
+    Book* newBook = new Book(title, author, genre, largestBookId);
+    books.insert(std::pair<int, Book*> (largestBookId, newBook));
+    cout << "BookID# " << largestBookId <<" successfully created." << endl;
   }
 
 }

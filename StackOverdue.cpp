@@ -3,6 +3,7 @@
 
 StackOverdue::StackOverdue(string libraryFile, string accountsFile){
   time = 1;
+  largestAccountId = 0;
   setStackOverdue(libraryFile, accountsFile);
   library.setBooksCurrDate(time);
   commandLoop();
@@ -100,6 +101,12 @@ void StackOverdue::commandLoop(){
          printSpecificAccount();
          cout << endl;
        } 
+    }else if(userInput == "ADDA"){
+       addAccount();
+       cout << endl;
+    }else if(userInput == "ADDB"){
+      library.addBook();
+      cout << endl;
     }
 
     //else{
@@ -181,6 +188,18 @@ void StackOverdue::printAccounts(){
   }
 }
 
+void StackOverdue::addAccount(){
+  string userInput = "";
+  cout << "Enter the user's name." << endl;
+  cout << "> ";
+  getline(cin, userInput);
+  largestAccountId++;
+  Account* newAccount = new Account(userInput, largestAccountId);
+  theAccounts.emplace(largestAccountId, newAccount);
+  accountCount++;
+  cout << "AccountID# " << largestAccountId << " successfully created." << endl;
+}
+
 //------------------Helper Functions-----------------------
 
 void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
@@ -197,9 +216,13 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
     while(getline(ss, tokenAcc, delim)){
   	  accTokens.push_back(tokenAcc);
     }
-    
+                                                         //v id   
     Account* newAcc = new Account(accTokens[1], stoi(accTokens[0]));//create account
-    
+    //find largest id
+    if(stoi(accTokens[0]) > largestAccountId){
+      largestAccountId = stoi(accTokens[0]);
+    }
+
     for(int i = 0; i < stoi(accTokens[2]); i++){
       string booksData = "";
       string tokenBooks;
@@ -221,7 +244,7 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
       }
       
     } 
-    //newAcc->printAccountShort();
+    
     theAccounts.emplace(newAcc->getAccountId(), newAcc);
     //auto it = theAccounts.end();
     //--it;

@@ -25,10 +25,13 @@ public:
   void printAccountsById();
   void printAccounts();
   void printSpecificAccount();
+
+  void addAccount();
 private:
   LibraryBooks library;
   unsigned int time;
   int accountCount;
+  int largestAccountId;
 
   void readAccountsInputStream(ifstream& accountsInputFileHandle);
   bool isValidInt(string str);
