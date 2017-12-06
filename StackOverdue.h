@@ -27,6 +27,8 @@ public:
   void printSpecificAccount();
 
   void addAccount();
+
+  void timeWarp();
 private:
   LibraryBooks library;
   unsigned int time;

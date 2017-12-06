@@ -11,7 +11,7 @@ StackOverdue::StackOverdue(string libraryFile, string accountsFile){
 }
 
 void StackOverdue::setStackOverdue(string libraryFile, string accountFile){
-  
+  //Read from the books input file
   if(libraryFile == ""){
   	cout << "No books provided."<< endl;
   }else{
@@ -22,9 +22,10 @@ void StackOverdue::setStackOverdue(string libraryFile, string accountFile){
   	}else{
   	  cout << "Loading books from \"" << libraryFile << "\"." << endl;
   	  libraryInputFileHandle >> library;
+  	  libraryInputFileHandle.close();
   	}
   }
-
+  //Read from the account input file
   if(accountFile == ""){
   	cout << "No accounts provided."<< endl;
   }else{
@@ -35,6 +36,7 @@ void StackOverdue::setStackOverdue(string libraryFile, string accountFile){
   	}else{
   	  cout << "Loading accounts from \"" << accountFile << "\"." << endl;
   	  readAccountsInputStream(accountsInputFileHandle);
+  	  accountsInputFileHandle.close();
   	}
   }
 }
@@ -88,25 +90,30 @@ void StackOverdue::commandLoop(){
         cout << endl;
       }
     }else if(userInput == "ACCOUNTS"){
-       if(theAccounts.size() <= 0){
-         cout << "No accounts in your library.\n" << endl; 
-       }else{
-         printAccounts();
-         cout << endl;
-       } 
+      if(theAccounts.size() <= 0){
+        cout << "No accounts in your library.\n" << endl; 
+      }else{
+        printAccounts();
+        cout << endl;
+      } 
     }else if(userInput == "ACCOUNT"){
-    	if(theAccounts.size() <= 0){
-         cout << "No accounts in your library.\n" << endl; 
-       }else{
-         printSpecificAccount();
-         cout << endl;
-       } 
+      if(theAccounts.size() <= 0){
+        cout << "No accounts in your library.\n" << endl; 
+      }else{
+        printSpecificAccount();
+        cout << endl;
+      } 
     }else if(userInput == "ADDA"){
-       addAccount();
-       cout << endl;
+      addAccount();
+      cout << endl;
     }else if(userInput == "ADDB"){
       library.addBook();
       cout << endl;
+    }else if(userInput == "TIME"){
+      timeWarp();
+      cout << endl;
+    }else if(userInput == "EXPORT"){
+      cout << "Under construction" << endl;
     }
 
     //else{
@@ -168,7 +175,6 @@ void StackOverdue::printSpecificAccount(){
   	  it->second->printAccountFull();
   	}
   }
-
 }
 
 void StackOverdue::printAccounts(){
@@ -200,6 +206,25 @@ void StackOverdue::addAccount(){
   cout << "AccountID# " << largestAccountId << " successfully created." << endl;
 }
 
+void StackOverdue::timeWarp(){
+  cout << "Enter the number of days to time travel." << endl;
+  cout << "> ";
+  string userInput = "";
+  getline(cin, userInput);
+
+  if(!isValidInt(userInput)){
+  	cout << "Invalid value." << endl;
+  }else{
+  	if(stoi(userInput) <= 0){
+  	  cout << "Invalid value." << endl;
+  	}else{
+  	  cout << "Traveled " << stoi(userInput) << " days through time (" << time
+  	  << " --> " << (time + stoi(userInput)) << ")." << endl;
+  	  time = time + stoi(userInput);
+  	  library.setBooksCurrDate(time);//update books current date
+  	}
+  }
+}
 //------------------Helper Functions-----------------------
 
 void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
@@ -207,12 +232,13 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
   string consumeEmpty;
   getline(accountsInputFileHandle, consumeEmpty);
   char delim = '|';
+  //populates the accounts
   for(int i = 0; i < accountCount; i++){
   	string accData = "";
     string tokenAcc;
     vector<string> accTokens;
     getline(accountsInputFileHandle, accData);
-    stringstream ss(accData);//split string
+    stringstream ss(accData);//split account string into vector
     while(getline(ss, tokenAcc, delim)){
   	  accTokens.push_back(tokenAcc);
     }
@@ -222,13 +248,13 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
     if(stoi(accTokens[0]) > largestAccountId){
       largestAccountId = stoi(accTokens[0]);
     }
-
+    //find the books the account has checked out
     for(int i = 0; i < stoi(accTokens[2]); i++){
       string booksData = "";
       string tokenBooks;
       vector<string> bookTokens;
       getline(accountsInputFileHandle, booksData);
-      stringstream ss(booksData);//split string
+      stringstream ss(booksData);//split book string onto vec
       while(getline(ss, tokenBooks, delim)){
   	    bookTokens.push_back(tokenBooks);
       }
