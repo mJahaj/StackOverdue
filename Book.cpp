@@ -93,6 +93,19 @@ bool Book::userReadThis(int accId){
   return false;
 }
 
+void Book::printFullDescriptionNoId(){
+  cout << "\tTitle: " << "\"" << title <<"\"" << endl;
+  cout << "\tAuthor: " << author << endl;
+  cout << "\tBookID#: " << id << endl;
+  cout << "\tGenre: " << genre << endl;
+  cout << "\tPopularity Score: " << popularity << endl;
+  cout << "\tDue Date: " << dueDate << endl;
+  cout << "\tTimes renewed: " << timesRenewed << endl;
+  if(overdue){//-------------------------------------------------maybe func instead
+    cout << "\tOVERDUE" << endl; 
+  }
+}
+
 istream& operator>>(istream& input, Book& book){
   string bookData = "";
   string token;

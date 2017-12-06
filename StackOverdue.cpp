@@ -86,6 +86,20 @@ void StackOverdue::commandLoop(){
         library.searchByPhrase();
         cout << endl;
       }
+    }else if(userInput == "ACCOUNTS"){
+       if(theAccounts.size() <= 0){
+         cout << "No accounts in your library.\n" << endl; 
+       }else{
+         printAccounts();
+         cout << endl;
+       } 
+    }else if(userInput == "ACCOUNT"){
+    	if(theAccounts.size() <= 0){
+         cout << "No accounts in your library.\n" << endl; 
+       }else{
+         printSpecificAccount();
+         cout << endl;
+       } 
     }
 
     //else{
@@ -95,6 +109,76 @@ void StackOverdue::commandLoop(){
   }
 
   cout << "Thank you for using StackOverdue!" << endl;
+}
+
+void StackOverdue::printAccountsByName(){
+  multimap<string, Account*> sortName;
+
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
+  	sortName.insert(pair<string, Account*>(it->second->getName(), it->second));
+  }
+  int i = 1;
+  for(auto it = sortName.begin(); it != sortName.end(); ++it, i++){
+    cout << i << ". "; 
+    it->second->printAccountShort();
+  }
+}
+
+void StackOverdue::printAccountsById(){
+  int i = 1;
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it, i++){
+  	cout << i << ". ";
+  	it->second->printAccountShort();
+  }
+}
+
+void StackOverdue::printAccountsByCheckouts(){
+  multimap<int, Account*> sortCheckouts;
+
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
+  	sortCheckouts.insert(pair<int, Account*>(it->second->getNumOfBooks(), it->second));
+  }
+  int i = 1;
+  for(auto it = sortCheckouts.rbegin(); it != sortCheckouts.rend(); ++it, i++){
+    cout << i << ". "; 
+    it->second->printAccountShort();
+  }
+}
+
+void StackOverdue::printSpecificAccount(){
+  string userInput;
+  cout << "Enter the account id." << endl;
+  cout << "> ";
+  getline(cin, userInput);
+
+  if(!isValidInt(userInput)){
+    cout << "Invalid input." << endl;
+  }else{
+  	auto it = theAccounts.find(stoi(userInput));
+  	if(it == theAccounts.end()){
+  	  cout << "AccountID# " << userInput << " not found." << endl;
+  	}else{
+  	  it->second->printAccountFull();
+  	}
+  }
+
+}
+
+void StackOverdue::printAccounts(){
+  string criteria = "";
+  cout << "Enter the criteria to search by. (name/accountid/checkouts)" << endl;
+  cout << "> ";
+  getline(cin, criteria);
+
+  if(criteria == "name"){
+  	printAccountsByName();
+  }else if(criteria == "accountid"){
+  	printAccountsById();
+  }else if(criteria == "checkouts"){
+  	printAccountsByCheckouts();
+  }else{
+  	cout << "Invalid value." << endl;
+  }
 }
 
 //------------------Helper Functions-----------------------
@@ -145,5 +229,21 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
     
   }//for1
   
+}
+
+bool StackOverdue::isValidInt(string str){
+  unsigned int i = 0;
+  if(str.length() == 1 && str[0] == '-'){
+    return false;
+  }
+  if(str[0] == '-'){
+    i = 1;
+  }
+  for(; i < str.length(); i++){
+    if(!isdigit(str[i])){
+      return false;
+    }
+  }
+  return true;
 }
 

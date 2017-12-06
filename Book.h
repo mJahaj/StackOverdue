@@ -34,6 +34,8 @@ public:
   void setTimesRenewed(int count){timesRenewed = count;}
   //print full description of the book
   void printFullDescription();
+  //print full description of the book without id
+  void printFullDescriptionNoId();
   //print short description of the book
   void printShortDescription();//--------
   void printShortDescription2();  

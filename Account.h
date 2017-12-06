@@ -22,7 +22,9 @@ public:
   //returns the number of books in the account
   int getNumOfBooks(){return accountBooks.size();}
   //take book and add it 
-  void takeBook(Book* book); 
+  void takeBook(Book* book);
+  int numOfBooksOverdue();
+  void printAccountFull();
   friend istream& operator>>(istream& input, Account& acc);  
 
 private:

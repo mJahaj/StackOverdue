@@ -9,9 +9,29 @@ void Account::printAccountShort(){
   	cout << accountBooks.size() << " books checked out:" << endl;
   	int i = 1;
   	for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, ++i){
-  	cout << "\t" << i << ". "; 
-  	it->second->printShortDescription2();
+  	  cout << "\t" << i << ". "; 
+  	  it->second->printShortDescription2();
     }
+  }
+}
+
+void Account::printAccountFull(){
+  cout << "Name: " <<name << endl;
+  cout << "AccountID#: " << id << endl;
+  if(accountBooks.size() <= 0){
+  	cout << "No books checked out." << endl;
+  }else{
+  	int overdueCount = numOfBooksOverdue();
+  	if(overdueCount <= 0){
+  	  cout << accountBooks.size() << " books checked out:" << endl;
+  	}else{
+  	  cout << accountBooks.size() << " books checked out: (" << overdueCount <<" overdue):"<<endl;
+  	}
+  	int i = 1;
+  	for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, i++){
+  	  cout << "\t" << i << "." <<endl;
+  	  it->second->printFullDescriptionNoId();
+  	}
   }
 }
 
@@ -23,6 +43,16 @@ Account::Account(string namE, int iD){
 Account::Account(){
   name = "";
   id = -1;
+}
+
+int Account::numOfBooksOverdue(){
+  int overdueCount = 0;
+  for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it){
+  	if(it->second->isOverdue()){
+  	  overdueCount++;
+  	}
+  }
+  return overdueCount;
 }
 
 void Account::takeBook(Book* book){

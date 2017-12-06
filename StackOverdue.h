@@ -19,12 +19,19 @@ public:
   void setStackOverdue(string libraryFile, string accountFile);
   void commandLoop();
   void printHelp();
+  //
+  void printAccountsByCheckouts();
+  void printAccountsByName();
+  void printAccountsById();
+  void printAccounts();
+  void printSpecificAccount();
 private:
   LibraryBooks library;
   unsigned int time;
   int accountCount;
 
   void readAccountsInputStream(ifstream& accountsInputFileHandle);
+  bool isValidInt(string str);
   map<int, Account*> theAccounts;
   //maybe set to keep track of all id's used for generating new id
 };
