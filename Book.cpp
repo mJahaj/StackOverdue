@@ -73,9 +73,11 @@ void Book::resetAfterReturn(){
   borrowerId = -1;
   borrowed = false;
   overdue = false;
+  currBorrowerAccount = NULL;
 }
 //
-void Book::setBorrowerId(int accountId){
+void Book::setBorrowerId(int accountId, Account* whoBorrowed){
+  currBorrowerAccount = whoBorrowed;//--------------------------
   borrowerId = accountId;
   borrowed = true;
   auto it = usersReadThis.find(accountId);

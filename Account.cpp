@@ -83,6 +83,12 @@ void Account::forceReturnAll(){
   }
 }
 
+void Account::returnSpecifiedBook(int bookId){
+  auto it = accountBooks.find(bookId);
+  it->second->resetAfterReturn();
+  accountBooks.erase(it);
+}
+
 istream& operator>>(istream& input, Account& acc){
 
   string accountData = "";

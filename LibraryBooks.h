@@ -8,6 +8,7 @@
 #include <map>
 #include "Book.h"
 #include <sstream>
+#include "Account.h"
 using namespace std;
 
 class LibraryBooks{
@@ -43,8 +44,10 @@ public:
   void exportBooks(string expFile);
   //returns the number of books that are currently overdue TIME: O(n)
   int numOfBooksOverdue();
-  
-
+  //removes a specified book from the library
+  void removeBook();
+  //return a specific book if it is checked out
+  void returnBook(int currDate);
   void browse();
   friend istream& operator>>(istream& bookFile, LibraryBooks& bookS);
 

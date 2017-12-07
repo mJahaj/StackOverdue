@@ -248,6 +248,65 @@ int LibraryBooks::numOfBooksOverdue(){
   }
   return accum;
 }
+
+void LibraryBooks::removeBook(){
+  string userInput = "";
+  cout << "Enter the book id." << endl;
+  cout << "> ";
+  getline(cin, userInput);
+
+  if(!isValidInt(userInput)){
+    cout << "Invalid input." << endl;
+  }else{
+    auto it = books.find(stoi(userInput));
+    if(it == books.end()){
+      cout << "BookID# " << userInput << " not found." << endl;
+    }else{
+      if(!it->second->getBorrowed()){//if book is not borrowed
+        cout << "\"" << it->second->getTitle() << "\" by " << it->second->getAuthor()
+        << " successfully removed." << endl;
+        books.erase(it);
+      }else{//if book is borrowed
+        Account* tempAcc = it->second->getCurrAccountBorrower();
+        cout << "Force returning book from AccountID# " << tempAcc->getAccountId() << "." << endl;
+        tempAcc->returnSpecifiedBook(stoi(userInput));//remove book from account
+        cout << "\"" << it->second->getTitle() << "\" by " << it->second->getAuthor() 
+             << " successfully removed." << endl; 
+        books.erase(it);
+      } 
+    }
+  }
+}
+
+void LibraryBooks::returnBook(int currDate){
+  string userInput = "";
+  cout << "Enter the book id." << endl; 
+  cout << "> ";
+  getline(cin, userInput);
+  
+  if(!isValidInt(userInput)){
+    cout << "Invalid input." << endl;
+  }else{
+    auto it = books.find(stoi(userInput));
+    if(it == books.end()){
+      cout << "BookID# " << userInput << " not found." << endl;
+    }else{
+      if(!it->second->getBorrowed()){
+        cout << "Book is currently not checked out." << endl;
+      }else{
+        Account* tempAcc = it->second->getCurrAccountBorrower();
+        cout << "Book successfully returned from AccountID# " << tempAcc->getAccountId() << " ";
+        if(!it->second->isOverdue()){
+          cout << "(on time)." << endl;
+        }else{
+          cout << "(overdue by " << (currDate - it->second->getDueDate())<< " days)." << endl;
+        }
+        tempAcc->returnSpecifiedBook(stoi(userInput));
+      }
+    }
+  }  
+
+}
 //-------------------Helper Functions----------------------------
 bool LibraryBooks::foundPhrase(string phrase, string str){
   std::size_t found = str.find(phrase);

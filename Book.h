@@ -8,6 +8,8 @@
 #include <vector>
 using namespace std;
 
+class Account;
+
 class Book{
 public:
   Book();
@@ -24,8 +26,10 @@ public:
   bool getBorrowed(){return borrowed;}
   //return true if the book is overude
   bool isOverdue(){return overdue;}
+  //returns the account pointer of the current book borrower
+  Account* getCurrAccountBorrower(){return currBorrowerAccount;}
   //store the ID of the current account that has this book
-  void setBorrowerId(int accountId);
+  void setBorrowerId(int accountId, Account* whoBorrowed);//---------------------------------------------------
   //sets the due date of the book
   void setDueDate(int date){dueDate = date;}
   //set the current system date
@@ -58,7 +62,7 @@ private:
   int borrowerId;
   bool borrowed;
   bool overdue;
-  
+  Account* currBorrowerAccount;
 
   set<int> usersReadThis;
 };

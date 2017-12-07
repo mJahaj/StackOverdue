@@ -118,8 +118,26 @@ void StackOverdue::commandLoop(){
       systemDiagnostics();
       cout << endl;
     }else if(userInput == "REMOVEA"){
-      removeAccount();
-      cout << endl;
+      if(theAccounts.size() <= 0){
+        cout << "No accounts in your library.\n" << endl; 
+      }else{
+      	removeAccount();
+        cout << endl;
+      }
+    }else if(userInput == "REMOVEB"){
+      if(library.librarySize() <= 0){
+      	cout << "No books in your library.\n" << endl;
+      }else{
+        library.removeBook();
+        cout << endl;
+      }
+    }else if(userInput == "RETURN"){
+      if(library.librarySize() <= 0){
+      	cout << "No books in your library.\n" << endl;
+      }else{
+        library.returnBook(time);
+        cout << endl;
+      }
     }
 
     //else{
@@ -230,8 +248,6 @@ void StackOverdue::removeAccount(){
 
   	}
   }
-
-
 }
 
 void StackOverdue::timeWarp(){
@@ -285,8 +301,8 @@ void StackOverdue::systemDiagnostics(){
   cout << "System time: " << time << endl;
   cout << "Number of books: " << library.librarySize() << endl;
   cout << "Number of overdue books: " << library.numOfBooksOverdue() << endl;
-  cout <<  "Number of accounts: " << theAccounts.size() << endl;
-
+  cout << "Number of accounts: " << theAccounts.size() << endl;
+  //count the number of overdue accounts O(n) note:can be seperate func
   int accountsOverdueCount = 0;
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
   	if(it->second->numOfBooksOverdue() > 0){
@@ -335,7 +351,7 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
       }else{
       	tempBookPtr->setDueDate(stoi(bookTokens[1]));
       	tempBookPtr->setTimesRenewed(stoi(bookTokens[2]));
-      	tempBookPtr->setBorrowerId(newAcc->getAccountId());
+      	tempBookPtr->setBorrowerId(newAcc->getAccountId(), newAcc);//----------------------------
       	newAcc->takeBook(tempBookPtr);
       }
     }  

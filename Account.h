@@ -28,6 +28,8 @@ public:
   void printAccountFull();
   //force return all of the books checked out
   void forceReturnAll();
+  //force return a specified book
+  void returnSpecifiedBook(int bookId);
   friend istream& operator>>(istream& input, Account& acc);
   friend ostream& operator<<(ostream& os, Account& acc);  
 
