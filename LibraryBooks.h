@@ -41,6 +41,8 @@ public:
   int librarySize(){return books.size();}
   //Export the books to a file
   void exportBooks(string expFile);
+  //returns the number of books that are currently overdue TIME: O(n)
+  int numOfBooksOverdue();
   
 
   void browse();

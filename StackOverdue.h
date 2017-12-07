@@ -27,10 +27,13 @@ public:
   void printSpecificAccount();
 
   void addAccount();
+  //export both library books and accounts to their respective files
   void exportBooksAccounts();
   void timeWarp();
-
+  //Export the accounts data to files
   void exportAccounts(string accountsFile);
+  void systemDiagnostics();
+  void removeAccount();
 private:
   LibraryBooks library;
   unsigned int time;

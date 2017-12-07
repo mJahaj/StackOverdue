@@ -24,7 +24,10 @@ public:
   //take book and add it 
   void takeBook(Book* book);
   int numOfBooksOverdue();
+  //print a full description of the account
   void printAccountFull();
+  //force return all of the books checked out
+  void forceReturnAll();
   friend istream& operator>>(istream& input, Account& acc);
   friend ostream& operator<<(ostream& os, Account& acc);  
 

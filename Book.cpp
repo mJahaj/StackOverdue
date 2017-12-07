@@ -70,7 +70,7 @@ void Book::printFullDescription(){
 void Book::resetAfterReturn(){
   dueDate = 0;
   timesRenewed = 0;
-  borrowerId = 0;
+  borrowerId = -1;
   borrowed = false;
   overdue = false;
 }

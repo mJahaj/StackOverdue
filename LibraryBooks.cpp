@@ -237,7 +237,16 @@ void LibraryBooks::exportBooks(string expFile){
   
   cout << "Books data successfully exported to \"" << expFile << "\"." << endl;
   outputBookFileHandle.close();
+}
 
+int LibraryBooks::numOfBooksOverdue(){
+  int accum = 0;
+  for(auto it = books.begin(); it != books.end(); ++it){
+    if(it->second->isOverdue() && it->second->getBorrowed()){
+      accum++;
+    }
+  }
+  return accum;
 }
 //-------------------Helper Functions----------------------------
 bool LibraryBooks::foundPhrase(string phrase, string str){

@@ -114,6 +114,12 @@ void StackOverdue::commandLoop(){
     }else if(userInput == "EXPORT"){
       exportBooksAccounts();
       cout << endl;
+    }else if(userInput == "SYSTEM"){
+      systemDiagnostics();
+      cout << endl;
+    }else if(userInput == "REMOVEA"){
+      removeAccount();
+      cout << endl;
     }
 
     //else{
@@ -121,7 +127,6 @@ void StackOverdue::commandLoop(){
     //}
 
   }
-
   cout << "Thank you for using StackOverdue!" << endl;
 }
 
@@ -206,6 +211,29 @@ void StackOverdue::addAccount(){
   cout << "AccountID# " << largestAccountId << " successfully created." << endl;
 }
 
+void StackOverdue::removeAccount(){
+  string input = "";
+  cout << "Enter the account id." << endl;
+  cout << "> ";
+  getline(cin, input);
+
+  if(!isValidInt(input)){
+  	cout << "Invalid input." << endl;
+  }else{
+  	auto it = theAccounts.find(stoi(input));
+  	if(it == theAccounts.end()){
+  	  cout << "AccountID# " << input << " not found." << endl;
+  	}else{
+      it->second->forceReturnAll();
+      cout << it->second->getName() <<"\'s account successfully removed." << endl;
+      theAccounts.erase(it);
+
+  	}
+  }
+
+
+}
+
 void StackOverdue::timeWarp(){
   cout << "Enter the number of days to time travel." << endl;
   cout << "> ";
@@ -251,6 +279,21 @@ void StackOverdue::exportAccounts(string accountsFile){
 
   cout << "Accounts data successfully exported to \"" << accountsFile << "\"." << endl;
   outputAccountsFileHandle.close();
+}
+
+void StackOverdue::systemDiagnostics(){
+  cout << "System time: " << time << endl;
+  cout << "Number of books: " << library.librarySize() << endl;
+  cout << "Number of overdue books: " << library.numOfBooksOverdue() << endl;
+  cout <<  "Number of accounts: " << theAccounts.size() << endl;
+
+  int accountsOverdueCount = 0;
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
+  	if(it->second->numOfBooksOverdue() > 0){
+  	  accountsOverdueCount++;
+  	}
+  }
+  cout << "Number of overdue accounts: " << accountsOverdueCount << endl;
 }
 //------------------Helper Functions-----------------------
 
@@ -315,4 +358,5 @@ bool StackOverdue::isValidInt(string str){
   }
   return true;
 }
+
 

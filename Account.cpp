@@ -75,6 +75,14 @@ void Account::takeBook(Book* book){
   accountBooks.insert(std::pair<int, Book*> (book->getId(), book));
 }
 
+void Account::forceReturnAll(){
+  for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it){
+  	it->second->resetAfterReturn();
+  	cout <<"\""<< it->second->getTitle() << "\"" << " by " << it->second->getAuthor()
+  	<< " (BookID# " << it->second->getId() << ") force returned." << endl;
+  }
+}
+
 istream& operator>>(istream& input, Account& acc){
 
   string accountData = "";
