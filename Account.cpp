@@ -97,3 +97,13 @@ istream& operator>>(istream& input, Account& acc){
   strToIntBooks >> booksHad;
   return input;
 }
+
+ostream& operator<<(ostream& os, Account& acc){
+  os << acc.id << "|" << acc.name << "|" << acc.accountBooks.size() << endl;
+
+  for(auto it = acc.accountBooks.begin(); it != acc.accountBooks.end(); ++it){
+  	os << it->second->getId() << "|" << it->second->getDueDate() << "|" 
+  	<< it->second->getTimesRenewed() << endl;
+  }
+  return os;
+}

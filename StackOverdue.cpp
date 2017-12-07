@@ -7,7 +7,6 @@ StackOverdue::StackOverdue(string libraryFile, string accountsFile){
   setStackOverdue(libraryFile, accountsFile);
   library.setBooksCurrDate(time);
   commandLoop();
-
 }
 
 void StackOverdue::setStackOverdue(string libraryFile, string accountFile){
@@ -113,7 +112,8 @@ void StackOverdue::commandLoop(){
       timeWarp();
       cout << endl;
     }else if(userInput == "EXPORT"){
-      cout << "Under construction" << endl;
+      exportBooksAccounts();
+      cout << endl;
     }
 
     //else{
@@ -225,6 +225,33 @@ void StackOverdue::timeWarp(){
   	}
   }
 }
+
+void StackOverdue::exportBooksAccounts(){
+  string booksFile = "";
+  string accountsFile = "";
+  cout << "Enter the name of the books file. (This may overwrite a file)" << endl;
+  cout << "> ";
+  getline(cin, booksFile);
+
+  cout << "Enter the name of the accounts file. (This may overwrite a file)" << endl;
+  cout << "> ";
+  getline(cin, accountsFile);
+  library.exportBooks(booksFile);
+  exportAccounts(accountsFile);
+}
+
+void StackOverdue::exportAccounts(string accountsFile){
+  ofstream outputAccountsFileHandle;
+  outputAccountsFileHandle.open(accountsFile);
+
+  outputAccountsFileHandle << theAccounts.size() << endl;
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
+    outputAccountsFileHandle << *(it->second);
+  }
+
+  cout << "Accounts data successfully exported to \"" << accountsFile << "\"." << endl;
+  outputAccountsFileHandle.close();
+}
 //------------------Helper Functions-----------------------
 
 void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
@@ -268,16 +295,9 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
       	tempBookPtr->setBorrowerId(newAcc->getAccountId());
       	newAcc->takeBook(tempBookPtr);
       }
-      
-    } 
-    
+    }  
     theAccounts.emplace(newAcc->getAccountId(), newAcc);
-    //auto it = theAccounts.end();
-    //--it;
-    //it->second->printAccountShort();
-    
-  }//for1
-  
+  }
 }
 
 bool StackOverdue::isValidInt(string str){

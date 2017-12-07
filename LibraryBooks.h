@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
+#include <fstream>
 #include <map>
 #include "Book.h"
 #include <sstream>
@@ -38,7 +39,8 @@ public:
   //
   void setBooksCurrDate(int date);
   int librarySize(){return books.size();}
-
+  //Export the books to a file
+  void exportBooks(string expFile);
   
 
   void browse();

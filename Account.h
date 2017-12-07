@@ -25,7 +25,8 @@ public:
   void takeBook(Book* book);
   int numOfBooksOverdue();
   void printAccountFull();
-  friend istream& operator>>(istream& input, Account& acc);  
+  friend istream& operator>>(istream& input, Account& acc);
+  friend ostream& operator<<(ostream& os, Account& acc);  
 
 private:
   string name;

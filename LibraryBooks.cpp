@@ -17,7 +17,6 @@ istream& operator>>(istream& bookFile, LibraryBooks& bookS){
     if(newBook->getId() > bookS.largestBookId){
       bookS.largestBookId = newBook->getId();
     }
-
     bookS.books.emplace(newBook->getId(), newBook);
   }
   return bookFile;
@@ -100,7 +99,6 @@ void LibraryBooks::searchByTitlePhrase(string phrase){
   if(!found){
   	cout << "No search results found." << endl;
   }
-
 }
 
 void LibraryBooks::searchByAuthorPhrase(string phrase){
@@ -120,7 +118,6 @@ void LibraryBooks::searchByAuthorPhrase(string phrase){
   if(!found){
   	cout << "No search results found." << endl;
   }
-
 }
 
 void LibraryBooks::addBook(){
@@ -148,7 +145,6 @@ void LibraryBooks::addBook(){
     books.insert(std::pair<int, Book*> (largestBookId, newBook));
     cout << "BookID# " << largestBookId <<" successfully created." << endl;
   }
-
 }
 
 bool LibraryBooks::giveBookUnconditional(int bookID, Book*& tempBook){
@@ -207,7 +203,6 @@ void LibraryBooks::printSpecificBook(){
       it->second->printFullDescription();
     }
   }
-  
 }
 
 void LibraryBooks::searchByPhrase(){
@@ -227,6 +222,22 @@ void LibraryBooks::searchByPhrase(){
   }else{
     cout << "Invalid value." << endl;
   }
+}
+
+void LibraryBooks::exportBooks(string expFile){
+  ofstream outputBookFileHandle;
+  outputBookFileHandle.open(expFile);
+  outputBookFileHandle << books.size() << endl;
+
+  for(auto it = books.begin(); it != books.end(); ++it){
+    outputBookFileHandle << it->second->getId() << "|" << it->second->getTitle()
+    << "|" << it->second->getAuthor() << "|" << it->second->getGenre() << "|" 
+    << it->second->getPopularity();
+  }
+  
+  cout << "Books data successfully exported to \"" << expFile << "\"." << endl;
+  outputBookFileHandle.close();
+
 }
 //-------------------Helper Functions----------------------------
 bool LibraryBooks::foundPhrase(string phrase, string str){

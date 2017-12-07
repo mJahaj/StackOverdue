@@ -18,6 +18,8 @@ public:
   string getTitle(){return title;}
   string getGenre(){return genre;}
   int getPopularity(){return popularity;}
+  int getDueDate(){return dueDate;}
+  int getTimesRenewed(){return timesRenewed;}
   //return true if the book is checked out
   bool getBorrowed(){return borrowed;}
   //return true if the book is overude

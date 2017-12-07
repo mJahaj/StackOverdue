@@ -27,8 +27,10 @@ public:
   void printSpecificAccount();
 
   void addAccount();
-
+  void exportBooksAccounts();
   void timeWarp();
+
+  void exportAccounts(string accountsFile);
 private:
   LibraryBooks library;
   unsigned int time;
