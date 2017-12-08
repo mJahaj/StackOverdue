@@ -138,6 +138,9 @@ void StackOverdue::commandLoop(){
         library.returnBook(time);
         cout << endl;
       }
+    }else if(userInput == "RENEW"){
+      renewBooks();
+      cout << endl;
     }
 
     //else{
@@ -295,6 +298,29 @@ void StackOverdue::exportAccounts(string accountsFile){
 
   cout << "Accounts data successfully exported to \"" << accountsFile << "\"." << endl;
   outputAccountsFileHandle.close();
+}
+
+void StackOverdue::renewBooks(){
+  string userInput = "";
+  cout << "Enter the account id." << endl;
+  cout << "> ";
+  getline(cin, userInput);
+
+  if(!isValidInt(userInput)){
+  	cout << "Invalid input." << endl;
+  }else{
+  	auto it = theAccounts.find(stoi(userInput));
+  	if(it == theAccounts.end()){
+  	  cout << "AccountID# " << userInput << " not found." << endl;
+  	}else{
+  	  if(it->second->numOfBooksOverdue() > 0){
+        cout << "Account has books overdue." << endl;
+  	  }else{
+  	  	it->second->renewAccountBooks();
+  	  }
+  	}
+  }
+
 }
 
 void StackOverdue::systemDiagnostics(){

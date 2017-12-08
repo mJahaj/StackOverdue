@@ -34,6 +34,7 @@ public:
   void exportAccounts(string accountsFile);
   void systemDiagnostics();
   void removeAccount();
+  void renewBooks();
 private:
   LibraryBooks library;
   unsigned int time;

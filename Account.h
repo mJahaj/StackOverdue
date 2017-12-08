@@ -23,6 +23,7 @@ public:
   int getNumOfBooks(){return accountBooks.size();}
   //take book and add it 
   void takeBook(Book* book);
+  //return the number of books overdue in this account
   int numOfBooksOverdue();
   //print a full description of the account
   void printAccountFull();
@@ -30,6 +31,8 @@ public:
   void forceReturnAll();
   //force return a specified book
   void returnSpecifiedBook(int bookId);
+  //renews all of the books with less than 2 renews 
+  void renewAccountBooks();
   friend istream& operator>>(istream& input, Account& acc);
   friend ostream& operator<<(ostream& os, Account& acc);  
 

@@ -25,7 +25,7 @@ void Account::printAccountFull(){
   	if(overdueCount <= 0){
   	  cout << accountBooks.size() << " books checked out:" << endl;
   	}else{
-  	  cout << accountBooks.size() << " books checked out: (" << overdueCount <<" overdue):"<<endl;
+  	  cout << accountBooks.size() << " books checked out (" << overdueCount <<" overdue):"<<endl;
   	}
   	int i = 1;
   	for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, i++){
@@ -87,6 +87,34 @@ void Account::returnSpecifiedBook(int bookId){
   auto it = accountBooks.find(bookId);
   it->second->resetAfterReturn();
   accountBooks.erase(it);
+}
+
+void Account::renewAccountBooks(){
+  int numOfBooksRenewable = 0;
+  for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it){
+  	if(it->second->getTimesRenewed() < 2){
+      numOfBooksRenewable++;
+  	}
+  }
+  if(accountBooks.size() <= 0){
+  	cout << "No books on this account." << endl;
+  }else{
+    cout << numOfBooksRenewable << " of " << accountBooks.size() << " books successfully renewed." << endl;
+    int i = 1;
+    for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, i++){
+  	  if(it->second->getTimesRenewed() < 2){
+  	    it->second->setDueDate( (it->second->getDueDate() + 5) );
+  	    it->second->setTimesRenewed( (it->second->getTimesRenewed() + 1) );
+  	    cout << "\t" << i << "." << endl;
+  	    it->second->printFullDescriptionNoId();
+  	    cout << "\tBook successfully renewed." << endl;
+  	  }else{
+  	    cout << "\t" << i << "." << endl;
+  	    it->second->printFullDescriptionNoId();
+  	    cout << "\tBook already renewed twice." << endl;
+  	  }
+    }
+  }
 }
 
 istream& operator>>(istream& input, Account& acc){
