@@ -36,17 +36,17 @@ void Book::findIfOverdue(){
 
 void Book::printShortDescription(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
-  << "[" << genre <<"]" <<". ";
+       << "[" << genre <<"]" <<". ";
   if(!borrowed){
-  	cout << "AVAILABLE."<< endl;
+    cout << "AVAILABLE."<< endl;
   }else{
-  	cout <<"CHECKED OUT " <<"(AccountID# " << borrowerId << ")."<< endl;
+    cout <<"CHECKED OUT " <<"(AccountID# " << borrowerId << ")."<< endl;
   }
 }
 
 void Book::printShortDescription2(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
-  << "[" << genre <<"]" <<". " << endl;
+       << "[" << genre <<"]" <<". " << endl;
 }
 
 void Book::printFullDescription(){
@@ -56,14 +56,14 @@ void Book::printFullDescription(){
   << "Genre: " << genre << "\n"
   << "Popularity Score: " << popularity <<"\n";
   if(!borrowed){
-  	cout << "AVAILABLE"<< endl;
+    cout << "AVAILABLE"<< endl;
   }else{
-  	cout << "Borrower AccountID#: " << borrowerId << "\n"
-  	<< "Due Date: " << dueDate <<"\n"
-  	<< "Times renewed: " << timesRenewed << "\n";
-  	if(overdue){//-------------------------------------------------maybe func instead
-  	  cout << "OVERDUE" << endl; 
-  	}
+    cout << "Borrower AccountID#: " << borrowerId << "\n"
+  	 << "Due Date: " << dueDate <<"\n"
+  	 << "Times renewed: " << timesRenewed << "\n";
+    if(overdue){//-------------------------------------------------maybe func instead
+      cout << "OVERDUE" << endl; 
+    }
   }
 }
 
@@ -77,7 +77,7 @@ void Book::resetAfterReturn(){
 }
 //
 void Book::setBorrowerId(int accountId, Account* whoBorrowed){
-  currBorrowerAccount = whoBorrowed;//--------------------------
+  currBorrowerAccount = whoBorrowed;
   borrowerId = accountId;
   borrowed = true;
   auto it = usersReadThis.find(accountId);
@@ -85,6 +85,7 @@ void Book::setBorrowerId(int accountId, Account* whoBorrowed){
    usersReadThis.insert(accountId);
    popularity++;
   }
+  overdue = false;
 }
 
 bool Book::userReadThis(int accId){
@@ -117,7 +118,7 @@ istream& operator>>(istream& input, Book& book){
   getline(input, bookData);
   stringstream ss(bookData);
   while(getline(ss, token, delim)){
-  	tokens.push_back(token);
+    tokens.push_back(token);
   }
 
   stringstream strToIntId(tokens[0]);

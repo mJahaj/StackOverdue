@@ -156,6 +156,41 @@ bool LibraryBooks::giveBookUnconditional(int bookID, Book*& tempBook){
   return true;
 }
 
+void LibraryBooks::giveBookConditional(Account* givetoThisAcc, int bookId, int currTime){
+  //find if book exists
+  auto it = books.find(bookId);
+  if(it == books.end()){
+    cout << "BookID# " << bookId << " not found." << endl;
+    return;
+  }else if(it->second->getBorrowed()){
+    cout << "Book is already checked out." << endl;
+    return;
+  }
+
+  if(givetoThisAcc->numOfBooksOverdue() > 0){
+    cout << "Account has books overdue." << endl;
+    return;
+  }else if(givetoThisAcc->getNumOfBooks() >= 10){
+    cout << "Account already has 10 books checked out." << endl;
+    return;
+  }else{
+    it->second->setDueDate(currTime + 15);
+    it->second->setBorrowerId(givetoThisAcc->getAccountId(), givetoThisAcc);
+    givetoThisAcc->takeBook(it->second);
+    cout << "Book successfully checked out." << endl;
+    cout << "Title: \"" << it->second->getTitle() << "\"" << endl;
+    cout << "Author: " << it->second->getAuthor() << endl;
+    cout << "BookID#: " << it->second->getId() << endl;
+    cout << "Genre: " << it->second->getGenre() << endl;
+    cout << "Popularity Score: " << it->second->getPopularity() << endl;
+    cout << "Borrower AccountID#: " << givetoThisAcc->getAccountId() << endl;
+    cout << "Due Date: " << it->second->getDueDate() << endl;
+    cout << "Times renewed: " << it->second->getTimesRenewed() << endl; 
+  }
+ 
+
+}
+
 void LibraryBooks::setBooksCurrDate(int date){
   for(auto it = books.begin(); it != books.end(); ++it){
     it->second->setCurrDate(date);
@@ -193,7 +228,7 @@ void LibraryBooks::printSpecificBook(){
   cout << "> ";
   getline(cin, userInput);
   
-  if(!isValidInt(userInput)){
+  if(!isValidInt(userInput) || userInput == ""){
     cout << "Invalid input." << endl;
   }else{
     auto it = books.find(stoi(userInput));
@@ -255,7 +290,7 @@ void LibraryBooks::removeBook(){
   cout << "> ";
   getline(cin, userInput);
 
-  if(!isValidInt(userInput)){
+  if(!isValidInt(userInput) || userInput == ""){
     cout << "Invalid input." << endl;
   }else{
     auto it = books.find(stoi(userInput));
@@ -284,7 +319,7 @@ void LibraryBooks::returnBook(int currDate){
   cout << "> ";
   getline(cin, userInput);
   
-  if(!isValidInt(userInput)){
+  if(!isValidInt(userInput) || userInput == ""){
     cout << "Invalid input." << endl;
   }else{
     auto it = books.find(stoi(userInput));
@@ -305,7 +340,6 @@ void LibraryBooks::returnBook(int currDate){
       }
     }
   }  
-
 }
 //-------------------Helper Functions----------------------------
 bool LibraryBooks::foundPhrase(string phrase, string str){

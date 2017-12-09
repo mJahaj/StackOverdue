@@ -141,6 +141,9 @@ void StackOverdue::commandLoop(){
     }else if(userInput == "RENEW"){
       renewBooks();
       cout << endl;
+    }else if(userInput == "CHECKOUT"){
+      cout << "Under construction"<< endl;
+      checkoutBook();
     }
 
     //else{
@@ -191,7 +194,7 @@ void StackOverdue::printSpecificAccount(){
   cout << "> ";
   getline(cin, userInput);
 
-  if(!isValidInt(userInput)){
+  if(!isValidInt(userInput) || userInput == ""){
     cout << "Invalid input." << endl;
   }else{
   	auto it = theAccounts.find(stoi(userInput));
@@ -238,7 +241,7 @@ void StackOverdue::removeAccount(){
   cout << "> ";
   getline(cin, input);
 
-  if(!isValidInt(input)){
+  if(!isValidInt(input) || input == ""){
   	cout << "Invalid input." << endl;
   }else{
   	auto it = theAccounts.find(stoi(input));
@@ -259,7 +262,7 @@ void StackOverdue::timeWarp(){
   string userInput = "";
   getline(cin, userInput);
 
-  if(!isValidInt(userInput)){
+  if(!isValidInt(userInput) || userInput == ""){
   	cout << "Invalid value." << endl;
   }else{
   	if(stoi(userInput) <= 0){
@@ -300,6 +303,39 @@ void StackOverdue::exportAccounts(string accountsFile){
   outputAccountsFileHandle.close();
 }
 
+void StackOverdue::checkoutBook(){
+  string accountInput = "";
+  string bookInput = "";
+  cout << "Enter the account id." << endl;
+  cout << "> ";
+  getline(cin, accountInput);
+
+  if(!isValidInt(accountInput) || accountInput == ""){
+  	cout << "Invalid input." << endl;
+  	return;
+  }
+
+  cout << "Enter the book id." << endl;
+  cout << "> ";
+  getline(cin, bookInput);
+
+  if(!isValidInt(bookInput) || bookInput == ""){
+  	cout << "Invalid input." << endl;
+  	return; 
+  }
+
+  //find if account exists
+  auto it = theAccounts.find(stoi(accountInput));
+  if(it == theAccounts.end()){
+  	cout << "AccountID# " << accountInput << " not found." << endl;
+  	return; 
+  }else{
+  	library.giveBookConditional(it->second, stoi(bookInput), time);
+  	cout << endl;
+  }
+  
+}
+
 void StackOverdue::renewBooks(){
   string userInput = "";
   cout << "Enter the account id." << endl;
@@ -320,14 +356,13 @@ void StackOverdue::renewBooks(){
   	  }
   	}
   }
-
 }
 
 void StackOverdue::systemDiagnostics(){
-  cout << "System time: " << time << endl;
-  cout << "Number of books: " << library.librarySize() << endl;
-  cout << "Number of overdue books: " << library.numOfBooksOverdue() << endl;
-  cout << "Number of accounts: " << theAccounts.size() << endl;
+  cout << "System time: " << time << "." << endl;
+  cout << "Number of books: " << library.librarySize() << "." << endl;
+  cout << "Number of overdue books: " << library.numOfBooksOverdue() << "." << endl;
+  cout << "Number of accounts: " << theAccounts.size() << "." << endl;
   //count the number of overdue accounts O(n) note:can be seperate func
   int accountsOverdueCount = 0;
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
@@ -335,7 +370,7 @@ void StackOverdue::systemDiagnostics(){
   	  accountsOverdueCount++;
   	}
   }
-  cout << "Number of overdue accounts: " << accountsOverdueCount << endl;
+  cout << "Number of overdue accounts: " << accountsOverdueCount << "." << endl;
 }
 //------------------Helper Functions-----------------------
 

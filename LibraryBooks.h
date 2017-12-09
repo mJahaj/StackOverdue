@@ -10,7 +10,7 @@
 #include <sstream>
 #include "Account.h"
 using namespace std;
-
+//Represents the Books in the library
 class LibraryBooks{
 public:
   LibraryBooks();
@@ -35,8 +35,13 @@ public:
   void searchByAuthorPhrase(string phrase);
   //add a book to the current library
   void addBook();
-  //give a book for setup
+  //Give a specified book to an account without checking if the
+  //account has 10 books or overdue books. Used for when an account
+  //is first set up.
   bool giveBookUnconditional(int bookID, Book*& tempBook);
+  //Give a book to an account if the book exists and if the account
+  //does not have a block
+  void giveBookConditional(Account* givetoThisAcc, int bookId, int currTime);
   //
   void setBooksCurrDate(int date);
   int librarySize(){return books.size();}

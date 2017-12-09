@@ -9,7 +9,7 @@
 using namespace std;
 
 class Account;
-
+//Represents a single Book
 class Book{
 public:
   Book();
