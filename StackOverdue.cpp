@@ -9,34 +9,41 @@ StackOverdue::StackOverdue(string libraryFile, string accountsFile){
   commandLoop();
 }
 
+StackOverdue::~StackOverdue(){
+  for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
+    delete it->second;
+  }
+}
+// This function loads the accounts and the books into the system
+// If the books or accounts files do not exist they are simply not loaded
 void StackOverdue::setStackOverdue(string libraryFile, string accountFile){
   //Read from the books input file
   if(libraryFile == ""){
-  	cout << "No books provided."<< endl;
+    cout << "No books provided."<< endl;
   }else{
-  	ifstream libraryInputFileHandle;
-  	libraryInputFileHandle.open(libraryFile);
-  	if(libraryInputFileHandle.fail()){
-  	  cout << "Could not find file \"" << libraryFile << "\". Skipping." << endl;
-  	}else{
-  	  cout << "Loading books from \"" << libraryFile << "\"." << endl;
-  	  libraryInputFileHandle >> library;
-  	  libraryInputFileHandle.close();
-  	}
+    ifstream libraryInputFileHandle;
+    libraryInputFileHandle.open(libraryFile);
+    if(libraryInputFileHandle.fail()){
+      cout << "Could not find file \"" << libraryFile << "\". Skipping." << endl;
+    }else{
+      cout << "Loading books from \"" << libraryFile << "\"." << endl;
+      libraryInputFileHandle >> library;
+      libraryInputFileHandle.close();
+    }
   }
   //Read from the account input file
   if(accountFile == ""){
-  	cout << "No accounts provided."<< endl;
+    cout << "No accounts provided."<< endl;
   }else{
-  	ifstream accountsInputFileHandle;
-  	accountsInputFileHandle.open(accountFile);
-  	if(accountsInputFileHandle.fail()){
-  	  cout << "Could not find file \"" << accountFile << "\". Skipping." << endl;
-  	}else{
-  	  cout << "Loading accounts from \"" << accountFile << "\"." << endl;
-  	  readAccountsInputStream(accountsInputFileHandle);
-  	  accountsInputFileHandle.close();
-  	}
+    ifstream accountsInputFileHandle;
+    accountsInputFileHandle.open(accountFile);
+    if(accountsInputFileHandle.fail()){
+      cout << "Could not find file \"" << accountFile << "\". Skipping." << endl;
+    }else{
+      cout << "Loading accounts from \"" << accountFile << "\"." << endl;
+      readAccountsInputStream(accountsInputFileHandle);
+      accountsInputFileHandle.close();
+    }
   }
 }
 
@@ -65,8 +72,8 @@ void StackOverdue::commandLoop(){
   string userInput = "";
 
   while(userInput != "EXIT"){
-  	cout << "> ";
-  	getline(cin, userInput);
+    cout << "> ";
+    getline(cin, userInput);
     
     if(userInput == "BROWSE"){
       library.browse();
@@ -142,23 +149,49 @@ void StackOverdue::commandLoop(){
       renewBooks();
       cout << endl;
     }else if(userInput == "CHECKOUT"){
-      cout << "Under construction"<< endl;
       checkoutBook();
+      cout << endl;
+    }else if(userInput == "RECOMMEND"){
+      recommendBooks();
+      cout << endl;
+    }else{
+      cout << "Invalid command.\n" << endl;
     }
-
-    //else{
-      //cout << "Invalid command.\n" << endl;
-    //}
 
   }
   cout << "Thank you for using StackOverdue!" << endl;
 }
 
+void StackOverdue::recommendBooks(){
+  string userInput = "";
+  cout << "Enter the account id." << endl;
+  cout << "> ";
+  getline(cin, userInput);
+
+  if(!isValidInt(userInput) || userInput == ""){
+  	cout << "Invalid input." << endl;
+  }else{
+    auto it = theAccounts.find(stoi(userInput));
+    if(it == theAccounts.end()){
+      cout << "AccountID#: " << userInput << " not found." << endl;
+    }else{
+      string favAuthor = it->second->favoriteAuthor();
+      vector<string> theirFavGenre;
+      it->second->twoFavoriteGenres(theirFavGenre);
+      if(theirFavGenre.size() <= 0){
+      	cout << "No available recommendations." << endl;
+      }else{
+      	library.giveBookRecommendation(theirFavGenre, favAuthor, it->second->getAccountId());
+      }
+    }
+  }
+}
+
 void StackOverdue::printAccountsByName(){
   multimap<string, Account*> sortName;
-
+  // Order the accounts be name ascending
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
-  	sortName.insert(pair<string, Account*>(it->second->getName(), it->second));
+    sortName.insert(pair<string, Account*>(it->second->getName(), it->second));
   }
   int i = 1;
   for(auto it = sortName.begin(); it != sortName.end(); ++it, i++){
@@ -170,16 +203,16 @@ void StackOverdue::printAccountsByName(){
 void StackOverdue::printAccountsById(){
   int i = 1;
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it, i++){
-  	cout << i << ". ";
-  	it->second->printAccountShort();
+    cout << i << ". ";
+    it->second->printAccountShort();
   }
 }
 
 void StackOverdue::printAccountsByCheckouts(){
   multimap<int, Account*> sortCheckouts;
-
+  //orders the accounts by number of chekouts descending
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
-  	sortCheckouts.insert(pair<int, Account*>(it->second->getNumOfBooks(), it->second));
+    sortCheckouts.insert(pair<int, Account*>(it->second->getNumOfBooks(), it->second));
   }
   int i = 1;
   for(auto it = sortCheckouts.rbegin(); it != sortCheckouts.rend(); ++it, i++){
@@ -197,12 +230,12 @@ void StackOverdue::printSpecificAccount(){
   if(!isValidInt(userInput) || userInput == ""){
     cout << "Invalid input." << endl;
   }else{
-  	auto it = theAccounts.find(stoi(userInput));
-  	if(it == theAccounts.end()){
-  	  cout << "AccountID# " << userInput << " not found." << endl;
-  	}else{
-  	  it->second->printAccountFull();
-  	}
+    auto it = theAccounts.find(stoi(userInput));
+    if(it == theAccounts.end()){
+      cout << "AccountID# " << userInput << " not found." << endl;
+    }else{
+      it->second->printAccountFull();
+    }
   }
 }
 
@@ -213,13 +246,13 @@ void StackOverdue::printAccounts(){
   getline(cin, criteria);
 
   if(criteria == "name"){
-  	printAccountsByName();
+    printAccountsByName();
   }else if(criteria == "accountid"){
-  	printAccountsById();
+    printAccountsById();
   }else if(criteria == "checkouts"){
-  	printAccountsByCheckouts();
+    printAccountsByCheckouts();
   }else{
-  	cout << "Invalid value." << endl;
+    cout << "Invalid value." << endl;
   }
 }
 
@@ -244,15 +277,15 @@ void StackOverdue::removeAccount(){
   if(!isValidInt(input) || input == ""){
   	cout << "Invalid input." << endl;
   }else{
-  	auto it = theAccounts.find(stoi(input));
-  	if(it == theAccounts.end()){
-  	  cout << "AccountID# " << input << " not found." << endl;
-  	}else{
+    auto it = theAccounts.find(stoi(input));
+    if(it == theAccounts.end()){
+      cout << "AccountID# " << input << " not found." << endl;
+    }else{
       it->second->forceReturnAll();
       cout << it->second->getName() <<"\'s account successfully removed." << endl;
+      delete it->second;
       theAccounts.erase(it);
-
-  	}
+    }
   }
 }
 
@@ -265,14 +298,14 @@ void StackOverdue::timeWarp(){
   if(!isValidInt(userInput) || userInput == ""){
   	cout << "Invalid value." << endl;
   }else{
-  	if(stoi(userInput) <= 0){
-  	  cout << "Invalid value." << endl;
-  	}else{
-  	  cout << "Traveled " << stoi(userInput) << " days through time (" << time
-  	  << " --> " << (time + stoi(userInput)) << ")." << endl;
-  	  time = time + stoi(userInput);
-  	  library.setBooksCurrDate(time);//update books current date
-  	}
+    if(stoi(userInput) <= 0){
+      cout << "Invalid value." << endl;
+    }else{
+      cout << "Traveled " << stoi(userInput) << " days through time (" << time
+        << " --> " << (time + stoi(userInput)) << ")." << endl;
+      time = time + stoi(userInput);
+      library.setBooksCurrDate(time);//update books current date
+    }
   }
 }
 
@@ -296,7 +329,7 @@ void StackOverdue::exportAccounts(string accountsFile){
 
   outputAccountsFileHandle << theAccounts.size() << endl;
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
-    outputAccountsFileHandle << *(it->second);
+    outputAccountsFileHandle << *(it->second);//using overloaded <<operator
   }
 
   cout << "Accounts data successfully exported to \"" << accountsFile << "\"." << endl;
@@ -311,29 +344,25 @@ void StackOverdue::checkoutBook(){
   getline(cin, accountInput);
 
   if(!isValidInt(accountInput) || accountInput == ""){
-  	cout << "Invalid input." << endl;
-  	return;
+    cout << "Invalid input." << endl;
+    return;
   }
-
   cout << "Enter the book id." << endl;
   cout << "> ";
   getline(cin, bookInput);
 
   if(!isValidInt(bookInput) || bookInput == ""){
-  	cout << "Invalid input." << endl;
-  	return; 
+    cout << "Invalid input." << endl;
+    return; 
   }
-
   //find if account exists
   auto it = theAccounts.find(stoi(accountInput));
   if(it == theAccounts.end()){
-  	cout << "AccountID# " << accountInput << " not found." << endl;
-  	return; 
+    cout << "AccountID# " << accountInput << " not found." << endl;
+    return; 
   }else{
-  	library.giveBookConditional(it->second, stoi(bookInput), time);
-  	cout << endl;
+    library.giveBookConditional(it->second, stoi(bookInput), time);
   }
-  
 }
 
 void StackOverdue::renewBooks(){
@@ -345,16 +374,16 @@ void StackOverdue::renewBooks(){
   if(!isValidInt(userInput)){
   	cout << "Invalid input." << endl;
   }else{
-  	auto it = theAccounts.find(stoi(userInput));
-  	if(it == theAccounts.end()){
-  	  cout << "AccountID# " << userInput << " not found." << endl;
-  	}else{
-  	  if(it->second->numOfBooksOverdue() > 0){
+    auto it = theAccounts.find(stoi(userInput));
+    if(it == theAccounts.end()){
+      cout << "AccountID# " << userInput << " not found." << endl;
+    }else{
+      if(it->second->numOfBooksOverdue() > 0){
         cout << "Account has books overdue." << endl;
-  	  }else{
-  	  	it->second->renewAccountBooks();
-  	  }
-  	}
+      }else{
+        it->second->renewAccountBooks();
+      }
+    }
   }
 }
 
@@ -366,9 +395,9 @@ void StackOverdue::systemDiagnostics(){
   //count the number of overdue accounts O(n) note:can be seperate func
   int accountsOverdueCount = 0;
   for(auto it = theAccounts.begin(); it != theAccounts.end(); ++it){
-  	if(it->second->numOfBooksOverdue() > 0){
-  	  accountsOverdueCount++;
-  	}
+    if(it->second->numOfBooksOverdue() > 0){
+      accountsOverdueCount++;
+    }
   }
   cout << "Number of overdue accounts: " << accountsOverdueCount << "." << endl;
 }
@@ -381,17 +410,17 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
   char delim = '|';
   //populates the accounts
   for(int i = 0; i < accountCount; i++){
-  	string accData = "";
+    string accData = "";
     string tokenAcc;
     vector<string> accTokens;
     getline(accountsInputFileHandle, accData);
-    stringstream ss(accData);//split account string into vector
+    stringstream ss(accData);//split account data string into vector
     while(getline(ss, tokenAcc, delim)){
-  	  accTokens.push_back(tokenAcc);
+     accTokens.push_back(tokenAcc);
     }
-                                                         //v id   
+     
     Account* newAcc = new Account(accTokens[1], stoi(accTokens[0]));//create account
-    //find largest id
+    //find largest Account id used
     if(stoi(accTokens[0]) > largestAccountId){
       largestAccountId = stoi(accTokens[0]);
     }
@@ -403,16 +432,16 @@ void StackOverdue::readAccountsInputStream(ifstream& accountsInputFileHandle){
       getline(accountsInputFileHandle, booksData);
       stringstream ss(booksData);//split book string onto vec
       while(getline(ss, tokenBooks, delim)){
-  	    bookTokens.push_back(tokenBooks);
+        bookTokens.push_back(tokenBooks);
       }
       
       Book* tempBookPtr;
       if(!library.giveBookUnconditional(stoi(bookTokens[0]), tempBookPtr)){
       	cout << "Could not find library book with ID# " << bookTokens[0] << "." << endl;
-      }else{
+      }else{//setup the book for giving to accunt
       	tempBookPtr->setDueDate(stoi(bookTokens[1]));
       	tempBookPtr->setTimesRenewed(stoi(bookTokens[2]));
-      	tempBookPtr->setBorrowerId(newAcc->getAccountId(), newAcc);//----------------------------
+      	tempBookPtr->setBorrowerId(newAcc->getAccountId(), newAcc);
       	newAcc->takeBook(tempBookPtr);
       }
     }  
@@ -425,7 +454,7 @@ bool StackOverdue::isValidInt(string str){
   if(str.length() == 1 && str[0] == '-'){
     return false;
   }
-  if(str[0] == '-'){
+  if(str[0] == '-'){// if the number is negative
     i = 1;
   }
   for(; i < str.length(); i++){

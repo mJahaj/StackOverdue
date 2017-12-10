@@ -23,7 +23,7 @@ Book::Book(string titlE, string authoR, string genrE, int iD){
 
 void Book::setCurrDate(int date){
   currDate = date;
-  findIfOverdue();
+  findIfOverdue();//update overdue variable
 }
 
 void Book::findIfOverdue(){
@@ -36,17 +36,17 @@ void Book::findIfOverdue(){
 
 void Book::printShortDescription(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
-       << "[" << genre <<"]" <<". ";
+    << "[" << genre <<"]" <<". ";
   if(!borrowed){
     cout << "AVAILABLE."<< endl;
   }else{
     cout <<"CHECKED OUT " <<"(AccountID# " << borrowerId << ")."<< endl;
   }
 }
-
+//Availibility information not shown
 void Book::printShortDescription2(){
   cout << "\"" << title <<"\""<< " by "<< author <<" "<< "(BookID# " << id <<") "
-       << "[" << genre <<"]" <<". " << endl;
+    << "[" << genre <<"]" <<". " << endl;
 }
 
 void Book::printFullDescription(){
@@ -59,8 +59,8 @@ void Book::printFullDescription(){
     cout << "AVAILABLE"<< endl;
   }else{
     cout << "Borrower AccountID#: " << borrowerId << "\n"
-  	 << "Due Date: " << dueDate <<"\n"
-  	 << "Times renewed: " << timesRenewed << "\n";
+      << "Due Date: " << dueDate <<"\n"
+      << "Times renewed: " << timesRenewed << "\n";
     if(overdue){//-------------------------------------------------maybe func instead
       cout << "OVERDUE" << endl; 
     }
@@ -75,7 +75,9 @@ void Book::resetAfterReturn(){
   overdue = false;
   currBorrowerAccount = NULL;
 }
-//
+//saves the account that is currently borrowing this book
+//and increse the book popularity if the account had not 
+//previously checked this book out
 void Book::setBorrowerId(int accountId, Account* whoBorrowed){
   currBorrowerAccount = whoBorrowed;
   borrowerId = accountId;
@@ -95,7 +97,7 @@ bool Book::userReadThis(int accId){
   }
   return false;
 }
-
+//print full description of the book without borrower id
 void Book::printFullDescriptionNoId(){
   cout << "\tTitle: " << "\"" << title <<"\"" << endl;
   cout << "\tAuthor: " << author << endl;
@@ -117,10 +119,11 @@ istream& operator>>(istream& input, Book& book){
 
   getline(input, bookData);
   stringstream ss(bookData);
+  //splits the string into a vec of strings
   while(getline(ss, token, delim)){
     tokens.push_back(token);
   }
-
+  //initialize the book
   stringstream strToIntId(tokens[0]);
   strToIntId >> book.id;
   book.title = tokens[1];

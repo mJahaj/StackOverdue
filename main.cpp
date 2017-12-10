@@ -1,11 +1,4 @@
-
-//#include "Book.h"
-#include <fstream>
 #include <iostream>
-#include <map>
-#include <iterator>
-//#include "LibraryBooks.h"
-//#include "Account.h"
 #include "StackOverdue.h"
 using namespace std;
 
@@ -18,8 +11,6 @@ int main(int argc, char **argv){
     bookFile = argv[1];
     accountFile = argv[2];
   }
-
   StackOverdue newStackOverdue(bookFile, accountFile);
-
   return 0;	
 }
