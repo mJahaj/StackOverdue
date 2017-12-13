@@ -61,7 +61,7 @@ of a specified book, search and print a short description of all the books conta
 
 NOTE: The functions that print a short description of a book based on the ordering (title, genre, author, popularity), use a multimap for sorting. The algorithm `sort` could also be used in place of the multimap but in  either case for printing all books in a specified order the time complexity is O(n log(n)).
 
-### StackOverdue 
+#### StackOverdue 
 
 This class is the library system manager. StackOverdue uses a `LibraryBooks` object to communicate with the books in the library. It also contains a map<int, Account*> to hold all of the accounts ordered by id number. I chose a map to keep the accounts ordered by id to print the accounts by id without needing to sort. For adding, searching or removing the worst case is O(log n), but an unordered_map would have been better in the average case O(1) but worse in the worst case O(n). On startup this class reads from the provided books and accounts files, and loads the accounts and library. For the accounts this class contains functionality to add an account, remove an account, print a short description of all the accounts, print a full description for a specific account, print all the accounts ordered by (name alphabetical ascending, number of checkouts descending, id number ascending), request a book for an account, request book recommendations for an account, and renew all books in an account. For the Library system altogether StackOverdue has functionality to request command input from the user, display a list of commands, export the accounts and library to their seperate files, move forward in time, and display system diagnostics.
 
