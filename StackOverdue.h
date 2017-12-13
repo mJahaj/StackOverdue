@@ -23,11 +23,11 @@ public:
   //The main UI for the user to enter commands
   void commandLoop();
   void printHelp();
-  void printAccountsByCheckouts();//TIME: O(n)
-  void printAccountsByName();     //TIME: O(n)
+  void printAccountsByCheckouts();//TIME: O(n log(n))
+  void printAccountsByName();     //TIME: O(n log(n))
   void printAccountsById();       //TIME: O(n)
   //Finds the criteria to print by (name, bookid, checkouts)
-  void printAccounts();
+  void printAccounts();          
   void printSpecificAccount();   //TIME: O(log n)
   void addAccount();             //TIME: O(log n)
   //export both library books and accounts to their respective files
@@ -37,7 +37,7 @@ public:
   //Export the accounts data to a file
   void exportAccounts(string accountsFile);
   void systemDiagnostics();
-  void removeAccount();
+  void removeAccount();          //TIME: O(log n)
   void checkoutBook();
   void renewBooks();
   void recommendBooks();

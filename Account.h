@@ -30,6 +30,7 @@ public:
   void returnSpecifiedBook(int bookId);
   //renews all of the books with less than 2 renews 
   void renewAccountBooks();//TIME O(n)
+  //Finds the two most favorite genres for the account
   void twoFavoriteGenres(vector<string>& twoGenres);
   string favoriteAuthor();
   friend istream& operator>>(istream& input, Account& acc);
@@ -39,8 +40,8 @@ private:
   string name;
   int id;
   unordered_map<int, Book*> accountBooks;//hold books
-  map<string, int> genresRead;//hold genre history
-  map<string, int> authorsRead;//hold author history
+  unordered_map<string, int> genresRead;//hold genre history
+  unordered_map<string, int> authorsRead;//hold author history
   
 };
 

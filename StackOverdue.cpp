@@ -154,12 +154,12 @@ void StackOverdue::commandLoop(){
     }else if(userInput == "RECOMMEND"){
       recommendBooks();
       cout << endl;
+    }else if(userInput == "EXIT"){
+      cout << "Thank you for using StackOverdue!" << endl;
     }else{
       cout << "Invalid command.\n" << endl;
     }
-
   }
-  cout << "Thank you for using StackOverdue!" << endl;
 }
 
 void StackOverdue::recommendBooks(){

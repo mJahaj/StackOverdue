@@ -49,7 +49,7 @@ private:
   string title;
   string genre;
   int popularity;
-  int currDate;
+  int currDate;//current system date
   int dueDate;
   int timesRenewed;
 
@@ -58,7 +58,7 @@ private:
   bool overdue;
   Account* currBorrowerAccount;
 
-  set<int> usersReadThis;
+  unordered_set<int> usersReadThis;
 };
 
 #endif
