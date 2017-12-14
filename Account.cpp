@@ -104,15 +104,15 @@ void Account::renewAccountBooks(){
   }else{//if account has books checked out
     cout << numOfBooksRenewable << " of " << accountBooks.size() << " books successfully renewed." << endl;
     int i = 1;
-    //find out which books can be renewed and ewnew them
+    //find out which books can be renewed and renew them
     for(auto it = accountBooks.begin(); it != accountBooks.end(); ++it, i++){
       if(it->second->getTimesRenewed() < 2){
         it->second->setDueDate( (it->second->getDueDate() + 5) );
-  	it->second->setTimesRenewed( (it->second->getTimesRenewed() + 1) );
-  	cout << "\t" << i << "." << endl;
-  	it->second->printFullDescriptionNoId();
-  	cout << "\tBook successfully renewed." << endl;
-      }else{//if maximum checkout reached
+        it->second->setTimesRenewed( (it->second->getTimesRenewed() + 1) );
+        cout << "\t" << i << "." << endl;
+        it->second->printFullDescriptionNoId();
+        cout << "\tBook successfully renewed." << endl;
+      }else{//if maximum renew count reached
         cout << "\t" << i << "." << endl;
   	it->second->printFullDescriptionNoId();
   	cout << "\tBook already renewed twice." << endl;
